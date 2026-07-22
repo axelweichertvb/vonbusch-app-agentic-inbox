@@ -11,7 +11,6 @@ import {
 	getSignatureBlock,
 	htmlToPlainText,
 	splitEmailList,
-	stripHtml,
 	toEmailListValue,
 } from "~/lib/utils";
 import { useDeleteEmail, useForwardEmail, useReplyToEmail, useSaveDraft, useSendEmail } from "~/queries/emails";
@@ -65,7 +64,9 @@ function buildForwardBody(
 ) {
 	const safeSender = escapeHtml(original.sender);
 	const safeSubject = escapeHtml(original.subject);
-	const safeBody = escapeHtml(stripHtml(original.body || "")).replace(/\n/g, "<br>");
+	// htmlToPlainText decodes entities + keeps line breaks; stripHtml would
+	// leave entities to be double-encoded and collapse the body (VON-1060).
+	const safeBody = escapeHtml(htmlToPlainText(original.body || "")).replace(/\n/g, "<br>");
 
 	return `<p><br></p>${sigBlock ? `${sigBlock}<br>` : ""}<div style="border: 1px solid #ddd; padding: 1em; background-color: #f9f9f9; margin: 1em 0;"><strong>Weitergeleitete Nachricht:</strong><br><strong>Von:</strong> ${safeSender}<br><strong>Datum:</strong> ${formatComposeDate(original.date)}<br><strong>Betreff:</strong> ${safeSubject}<br><br>${safeBody}</div>`;
 }

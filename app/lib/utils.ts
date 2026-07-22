@@ -166,7 +166,10 @@ export function buildQuotedReplyBlock(
 	// The original HTML renders safely in the sandboxed iframe, but quoted
 	// reply blocks are injected into the compose editor where raw HTML would
 	// execute. Convert to escaped plain text instead.
-	const bodyToQuote = escapeHtml(stripHtml(body)).replace(/\n/g, "<br>");
+	// Use htmlToPlainText (not stripHtml) so entities are decoded and line
+	// breaks preserved -- stripHtml leaves `&nbsp;`/`&lt;` intact, which
+	// escapeHtml then double-encodes into a garbled wall of text (VON-1060).
+	const bodyToQuote = escapeHtml(htmlToPlainText(body)).replace(/\n/g, "<br>");
 
 	return `<br><blockquote style="border-left: 2px solid #ccc; margin: 0; padding-left: 1em; color: #666;">Am ${formattedDate} schrieb ${escapedSender}:<br><br>${bodyToQuote}</blockquote>`;
 }

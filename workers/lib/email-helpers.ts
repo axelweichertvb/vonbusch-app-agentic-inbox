@@ -190,6 +190,94 @@ export function stripHtmlToText(html: string): string {
 }
 
 /**
+ * Decode the common named and numeric HTML entities back to their
+ * character form. Runs in the Workers runtime (no DOM), so this is a
+ * regex-based decoder covering the entities that show up in real mail
+ * bodies. `&amp;` is decoded last so sequences like `&amp;nbsp;` collapse
+ * to a literal `&nbsp;` text rather than a space.
+ */
+const NAMED_ENTITIES: Record<string, string> = {
+	nbsp: " ",
+	lt: "<",
+	gt: ">",
+	quot: '"',
+	apos: "'",
+	// German umlauts / sharp s -- extremely common in this mailbox
+	auml: "ä",
+	ouml: "ö",
+	uuml: "ü",
+	Auml: "Ä",
+	Ouml: "Ö",
+	Uuml: "Ü",
+	szlig: "ß",
+	// Common Latin-1 / punctuation entities seen in quoted mail
+	agrave: "à",
+	eacute: "é",
+	egrave: "è",
+	ccedil: "ç",
+	ndash: "–",
+	mdash: "—",
+	hellip: "…",
+	laquo: "«",
+	raquo: "»",
+	bdquo: "„",
+	ldquo: "“",
+	rdquo: "”",
+	lsquo: "‘",
+	rsquo: "’",
+	euro: "€",
+	copy: "©",
+	reg: "®",
+	trade: "™",
+	deg: "°",
+};
+
+export function decodeHtmlEntities(text: string): string {
+	if (!text) return "";
+	return (
+		text
+			.replace(/&#(\d+);/g, (_m, code: string) => String.fromCodePoint(Number(code)))
+			.replace(/&#x([0-9a-f]+);/gi, (_m, hex: string) =>
+				String.fromCodePoint(Number.parseInt(hex, 16)),
+			)
+			// Named entities except &amp;, matched case-sensitively so the German
+			// upper/lowercase umlaut variants map correctly.
+			.replace(/&([a-zA-Z]+);/g, (match, name: string) =>
+				Object.hasOwn(NAMED_ENTITIES, name) ? NAMED_ENTITIES[name] : match,
+			)
+			// &amp; last so `&amp;nbsp;` decodes to a literal `&nbsp;`, not a space.
+			.replace(/&amp;/gi, "&")
+	);
+}
+
+/**
+ * Convert an HTML body to readable plain text while PRESERVING line breaks
+ * and DECODING entities. Unlike `stripHtmlToText` (which collapses all
+ * whitespace and leaves entities like `&nbsp;`/`&lt;` intact), this is used
+ * for quoted reply blocks where structure and correct characters matter.
+ *
+ * Block-level boundaries (`<br>`, `</p>`, `</div>`, list items, table rows,
+ * headings) become newlines before the remaining tags are stripped, then
+ * entities are decoded so the text can be safely re-escaped exactly once by
+ * the caller.
+ */
+export function htmlToPlainText(html: string): string {
+	if (!html) return "";
+	const withBreaks = html
+		.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+		.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+		.replace(/<br\s*\/?>/gi, "\n")
+		.replace(/<\/(p|div|li|tr|h[1-6]|blockquote)>/gi, "\n")
+		.replace(/<li[^>]*>/gi, "• ")
+		.replace(/<[^>]+>/g, "");
+	return decodeHtmlEntities(withBreaks)
+		.replace(/[ \t]+\n/g, "\n") // trim trailing spaces on each line
+		.replace(/\n{3,}/g, "\n\n") // collapse runs of blank lines
+		.replace(/[ \t]{2,}/g, " ") // collapse horizontal whitespace runs
+		.trim();
+}
+
+/**
  * Format a date string for use in quoted reply blocks.
  * @deprecated Use `formatQuotedDate` from `shared/dates` directly.
  */
@@ -213,7 +301,11 @@ export function buildQuotedReplyBlock(original: {
 	// The original HTML renders safely in the sandboxed iframe, but quoted
 	// reply blocks are injected into the compose editor and outgoing emails
 	// where raw HTML would execute. Convert to escaped plain text instead.
-	const plainBody = stripHtmlToText(original.body);
+	// Use htmlToPlainText (not stripHtmlToText) so entities are decoded and
+	// line breaks preserved -- otherwise surviving `&nbsp;`/`&lt;` get
+	// double-escaped by escapeHtml and the quote renders as one garbled wall
+	// of `&amp;nbsp;` text (VON-1060).
+	const plainBody = htmlToPlainText(original.body);
 	const bodyToQuote = escapeHtml(plainBody).replace(/\n/g, "<br>");
 
 	return `<br><blockquote style="border-left: 2px solid #ccc; margin: 0; padding-left: 1em; color: #666;">Am ${originalDate} schrieb ${originalSender}:<br><br>${bodyToQuote}</blockquote>`;
