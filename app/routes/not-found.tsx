@@ -13,11 +13,11 @@ export default function NotFoundRoute() {
 		<div className="flex items-center justify-center min-h-screen">
 			<Empty
 				icon={<WarningIcon size={48} className="text-kumo-inactive" />}
-				title="404 -- Page Not Found"
-				description="The page you're looking for doesn't exist."
+				title="404 – Seite nicht gefunden"
+				description="Die gesuchte Seite existiert nicht."
 				contents={
 					<Button variant="primary" size="sm" onClick={() => navigate("/")}>
-						Go Home
+						Zur Startseite
 					</Button>
 				}
 			/>

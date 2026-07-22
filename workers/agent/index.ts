@@ -50,42 +50,45 @@ function defineTool(def: {
  * Default system prompt used when no custom prompt is configured for a mailbox.
  * Users can override this on a per-mailbox basis via the Settings UI.
  */
-const DEFAULT_SYSTEM_PROMPT = `You are an email assistant that helps manage this inbox. You read emails, draft replies, and help organize conversations.
+const DEFAULT_SYSTEM_PROMPT = `Du bist ein E-Mail-Assistent, der bei der Verwaltung dieses Postfachs hilft. Du liest E-Mails, verfasst Antwortentwürfe und hilfst dabei, Konversationen zu organisieren.
 
-## Writing Style
-Write like a real person. Short, direct, flowing prose. Get to the point. Plain text only - no HTML tags in your replies.
+## Sprache (verbindlich)
+Antworte AUSSCHLIESSLICH auf Deutsch. Alle E-Mail-Entwürfe, alle Chat-Nachrichten und jede sonstige Ausgabe sind auf Deutsch zu verfassen – unabhängig davon, in welcher Sprache die eingehende E-Mail geschrieben ist. Verwende korrektes, natürliches Deutsch (Umlaute ä ö ü, ß). Verfasse Antworten standardmäßig in höflicher Sie-Form, sofern der Ton der Konversation nicht eindeutig das Du nahelegt.
 
-**Formatting rules:**
-- Write in natural paragraphs. NO bullet points, NO numbered lists, NO dashes, NO markdown formatting in email drafts.
-- NO bold (**), NO italic (*), NO headers (#), NO horizontal rules (---), NO code blocks. Plain text only.
-- Links go inline in the text, not on separate lines.
-- Don't structure replies like a template or form letter. Just talk normally.
+## Schreibstil
+Schreibe wie ein echter Mensch. Kurze, direkte, fließende Prosa. Komm auf den Punkt. Nur reiner Text – keine HTML-Tags in deinen Antworten.
 
-**Agent Behavior Rules (CRITICAL):**
-- NEVER output meta-commentary about what you are doing (e.g. do not say "I am drafting a reply to Alex", "I checked the thread", etc).
-- When a new email arrives, your ONLY job is to call the \`draft_reply\` tool.
-- DO NOT summarize the email. DO NOT explain your actions.
-- Output NOTHING except the tool call. If you must output text, it should ONLY be the literal draft text itself if tools fail.
-- Before drafting ANY reply, carefully read the full thread history.
-- NEVER repeat information that was already shared in a prior message in the thread.
-- Your reply should only contain NEW information or directly respond to what the person just said. Move the conversation forward, don't rehash it.
+**Formatierungsregeln:**
+- Schreibe in natürlichen Absätzen. KEINE Aufzählungspunkte, KEINE nummerierten Listen, KEINE Gedankenstriche, KEINE Markdown-Formatierung in E-Mail-Entwürfen.
+- KEIN Fettdruck (**), KEIN Kursiv (*), KEINE Überschriften (#), KEINE Trennlinien (---), KEINE Codeblöcke. Nur reiner Text.
+- Links stehen inline im Text, nicht in separaten Zeilen.
+- Strukturiere Antworten nicht wie eine Vorlage oder einen Serienbrief. Sprich einfach normal.
 
-## Who Are You Replying To?
-Use the name the person gives in their email body / signature. That's their name - use it. The "from" address is where you send the reply, but the name in the email is how you greet them.
+**Verhaltensregeln des Agenten (KRITISCH):**
+- Gib NIEMALS Meta-Kommentare darüber aus, was du gerade tust (sage z. B. nicht „Ich verfasse eine Antwort an Alex", „Ich habe den Verlauf geprüft" usw.).
+- Wenn eine neue E-Mail eintrifft, ist deine EINZIGE Aufgabe, das Tool \`draft_reply\` aufzurufen.
+- Fasse die E-Mail NICHT zusammen. Erkläre deine Handlungen NICHT.
+- Gib NICHTS außer dem Tool-Aufruf aus. Falls du Text ausgeben musst, sollte dies NUR der eigentliche Entwurfstext selbst sein, falls die Tools fehlschlagen.
+- Lies vor dem Verfassen JEDER Antwort sorgfältig den gesamten Verlauf des Threads.
+- Wiederhole NIEMALS Informationen, die bereits in einer früheren Nachricht des Threads geteilt wurden.
+- Deine Antwort sollte nur NEUE Informationen enthalten oder direkt auf das eingehen, was die Person gerade gesagt hat. Bring die Konversation voran, kau sie nicht wieder durch.
 
-## CRITICAL: Draft Only - Never Send
-You can ONLY draft emails. You do NOT have the ability to send emails directly.
+## An wen antwortest du?
+Verwende den Namen, den die Person in ihrem E-Mail-Text / ihrer Signatur angibt. Das ist ihr Name – verwende ihn. Die „Von"-Adresse ist die Adresse, an die du die Antwort sendest, aber der Name in der E-Mail ist die Anrede, mit der du sie begrüßt.
 
-- Use draft_reply to draft replies to existing emails
-- Use draft_email to draft new outbound emails
-- The operator will review and send drafts from the UI - you cannot send them
+## KRITISCH: Nur Entwürfe – niemals senden
+Du kannst NUR Entwürfe verfassen. Du hast NICHT die Fähigkeit, E-Mails direkt zu versenden.
 
-**CRITICAL: The draft body must contain ONLY the email text.** Never include agent commentary, status messages, meta-notes, markdown formatting, or anything that isn't part of the actual email in the draft body. No "Draft created.", no "---", no "**bold**", no "Here's the draft:", no separators. The body field is the literal email the recipient will read. Everything else goes in your chat message, not in the draft body.
+- Verwende draft_reply, um Antworten auf bestehende E-Mails zu entwerfen
+- Verwende draft_email, um neue ausgehende E-Mails zu entwerfen
+- Die Bedienperson prüft die Entwürfe und versendet sie über die Oberfläche – du kannst sie nicht versenden
 
-**Don't paste draft contents into the chat.** The drafts are saved via tools - the operator can see them in the Drafts folder. In your chat message, just briefly say what you drafted (e.g. "Drafted a reply to Tim"). Don't duplicate the full email body in the chat.
+**KRITISCH: Der Entwurfstext darf AUSSCHLIESSLICH den E-Mail-Text enthalten.** Füge niemals Agenten-Kommentare, Statusmeldungen, Meta-Notizen, Markdown-Formatierung oder irgendetwas ein, das nicht Teil der eigentlichen E-Mail ist. Kein „Entwurf erstellt.", kein „---", kein „**fett**", kein „Hier ist der Entwurf:", keine Trennzeichen. Das Textfeld ist die wörtliche E-Mail, die der Empfänger liest. Alles andere gehört in deine Chat-Nachricht, nicht in den Entwurfstext.
 
-## Draft Management
-Use discard_draft to delete drafts that the operator rejects or that are no longer needed.`;
+**Füge den Entwurfsinhalt nicht in den Chat ein.** Die Entwürfe werden über die Tools gespeichert – die Bedienperson sieht sie im Ordner „Entwürfe". Sage in deiner Chat-Nachricht nur kurz, was du entworfen hast (z. B. „Antwort an Tim entworfen"). Wiederhole nicht den vollständigen E-Mail-Text im Chat.
+
+## Verwaltung von Entwürfen
+Verwende discard_draft, um Entwürfe zu löschen, die die Bedienperson ablehnt oder die nicht mehr benötigt werden.`;
 
 /**
  * Fetch the custom system prompt for a mailbox from its R2 settings.
@@ -356,16 +359,16 @@ export class EmailAgent extends AIChatAgent<any> {
 						{
 							id: crypto.randomUUID(),
 							role: "user" as const,
-							content: `[Auto-triggered] New email from ${emailData.sender}: "${emailData.subject}"`,
+							content: `[Automatisch ausgelöst] Neue E-Mail von ${emailData.sender}: "${emailData.subject}"`,
 							createdAt: new Date(),
-							parts: [{ type: "text" as const, text: `[Auto-triggered] New email from ${emailData.sender}: "${emailData.subject}"` }],
+							parts: [{ type: "text" as const, text: `[Automatisch ausgelöst] Neue E-Mail von ${emailData.sender}: "${emailData.subject}"` }],
 						},
 						{
 							id: crypto.randomUUID(),
 							role: "assistant" as const,
-							content: "⚠️ Blocked auto-draft creation: the email appears to contain prompt injection or malicious instructions.",
+							content: "⚠️ Automatische Entwurfserstellung blockiert: Die E-Mail scheint eine Prompt-Injection oder schädliche Anweisungen zu enthalten.",
 							createdAt: new Date(),
-							parts: [{ type: "text" as const, text: "⚠️ Blocked auto-draft creation: the email appears to contain prompt injection or malicious instructions." }],
+							parts: [{ type: "text" as const, text: "⚠️ Automatische Entwurfserstellung blockiert: Die E-Mail scheint eine Prompt-Injection oder schädliche Anweisungen zu enthalten." }],
 						},
 					];
 					await this.persistMessages([...this.messages, ...newMessages]);
@@ -402,16 +405,16 @@ export class EmailAgent extends AIChatAgent<any> {
 						{
 							id: crypto.randomUUID(),
 							role: "user" as const,
-							content: `[Auto-triggered] New email from ${emailData.sender}: "${emailData.subject}"`,
+							content: `[Automatisch ausgelöst] Neue E-Mail von ${emailData.sender}: "${emailData.subject}"`,
 							createdAt: new Date(),
-							parts: [{ type: "text" as const, text: `[Auto-triggered] New email from ${emailData.sender}: "${emailData.subject}"` }],
+							parts: [{ type: "text" as const, text: `[Automatisch ausgelöst] Neue E-Mail von ${emailData.sender}: "${emailData.subject}"` }],
 						},
 						{
 							id: crypto.randomUUID(),
 							role: "assistant" as const,
-							content: "Blocked auto-draft creation: the thread context appears to contain prompt injection or malicious instructions.",
+							content: "Automatische Entwurfserstellung blockiert: Der Thread-Verlauf scheint eine Prompt-Injection oder schädliche Anweisungen zu enthalten.",
 							createdAt: new Date(),
-							parts: [{ type: "text" as const, text: "Blocked auto-draft creation: the thread context appears to contain prompt injection or malicious instructions." }],
+							parts: [{ type: "text" as const, text: "Automatische Entwurfserstellung blockiert: Der Thread-Verlauf scheint eine Prompt-Injection oder schädliche Anweisungen zu enthalten." }],
 						},
 					];
 					await this.persistMessages([...this.messages, ...newMessages]);
@@ -423,32 +426,32 @@ export class EmailAgent extends AIChatAgent<any> {
 			console.warn("Pre-read failed, agent will use tools:", (e as Error).message);
 		}
 
-		let autoPrompt = `A new email just arrived. Draft an appropriate response using draft_reply.
+		let autoPrompt = `Soeben ist eine neue E-Mail eingetroffen. Verfasse mit draft_reply eine passende Antwort auf Deutsch.
 
-Email details:
-- Mailbox: ${emailData.mailboxId}
-- Email ID: ${emailData.emailId}
-- From: ${emailData.sender}
-- Subject: ${emailData.subject}
-- Thread ID: ${emailData.threadId}
+E-Mail-Details:
+- Postfach: ${emailData.mailboxId}
+- E-Mail-ID: ${emailData.emailId}
+- Von: ${emailData.sender}
+- Betreff: ${emailData.subject}
+- Thread-ID: ${emailData.threadId}
 
-Email body:
-${emailBody || "(could not pre-read — use get_email to read it)"}`;
+E-Mail-Text:
+${emailBody || "(konnte nicht vorab gelesen werden — verwende get_email, um sie zu lesen)"}`;
 
 		if (threadContext) {
 			autoPrompt += `
 
-Full thread history (${emailData.threadId}):
+Vollständiger Thread-Verlauf (${emailData.threadId}):
 ${threadContext}`;
 		} else {
 			autoPrompt += `
 
-This is the first message in the thread (no prior conversation).`;
+Dies ist die erste Nachricht im Thread (keine vorherige Konversation).`;
 		}
 
 		autoPrompt += `
 
-Based on the email content and thread context above, draft a reply using draft_reply. If you need more context, use get_thread with thread ID "${emailData.threadId}".`;
+Verfasse auf Basis des E-Mail-Inhalts und des Thread-Kontexts oben mit draft_reply eine Antwort auf Deutsch. Falls du mehr Kontext benötigst, verwende get_thread mit der Thread-ID "${emailData.threadId}".`;
 
 		// Fresh context for auto-draft -- don't include prior chat history
 		// to avoid confusing the model with old messages and tool calls
@@ -513,20 +516,20 @@ Based on the email content and thread context above, draft a reply using draft_r
 			// Persist the conversation into the agent's chat history
 			// If it called the tool, we just log a simple success message so the chat isn't cluttered
 			// with conversational slop.
-			const assistantText = draftToolCalled 
-				? `Created draft reply to ${emailData.sender}.`
+			const assistantText = draftToolCalled
+				? `Antwortentwurf an ${emailData.sender} erstellt.`
 				: result.text;
 
 			const newMessages = [
 				{
 					id: crypto.randomUUID(),
 					role: "user" as const,
-					content: `[Auto-triggered] New email from ${emailData.sender}: "${emailData.subject}"`,
+					content: `[Automatisch ausgelöst] Neue E-Mail von ${emailData.sender}: "${emailData.subject}"`,
 					createdAt: new Date(),
 					parts: [
 						{
 							type: "text" as const,
-							text: `[Auto-triggered] New email from ${emailData.sender}: "${emailData.subject}"`,
+							text: `[Automatisch ausgelöst] Neue E-Mail von ${emailData.sender}: "${emailData.subject}"`,
 						},
 					],
 				},

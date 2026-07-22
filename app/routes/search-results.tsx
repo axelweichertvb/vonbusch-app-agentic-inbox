@@ -65,7 +65,7 @@ export default function SearchResultsRoute() {
 	const isPanelOpen = selectedEmailId !== null || isComposing;
 
 	const handleRowClick = (email: Email) => { selectEmail(email.id); if (!email.read && mailboxId) updateEmail.mutate({ mailboxId, id: email.id, data: { read: true } }); };
-	const folderDisplayName = (name: string | null | undefined): string => { if (!name) return ""; const map: Record<string, string> = { inbox: "Inbox", sent: "Sent", draft: "Drafts", archive: "Archive", trash: "Trash" }; return map[name.toLowerCase()] || name; };
+	const folderDisplayName = (name: string | null | undefined): string => { if (!name) return ""; const map: Record<string, string> = { inbox: "Posteingang", sent: "Gesendet", draft: "Entwürfe", archive: "Archiv", trash: "Papierkorb" }; return map[name.toLowerCase()] || name; };
 
 	return (
 		<MailboxSplitView
@@ -74,16 +74,16 @@ export default function SearchResultsRoute() {
 		>
 			<>
 				<div className="flex items-center gap-2 px-4 py-3.5 border-b border-kumo-line shrink-0 md:px-5">
-					<Tooltip content="Back to inbox" side="bottom" asChild><Button variant="ghost" shape="square" size="sm" icon={<ArrowLeftIcon size={18} />} onClick={() => navigate(`/mailbox/${mailboxId}/emails/inbox`)} aria-label="Back to inbox" /></Tooltip>
-					<div className="min-w-0 flex-1"><h1 className="text-lg font-semibold text-kumo-default truncate">Search Results</h1>{!isLoading && <span className="text-sm text-kumo-subtle">{totalCount} result{totalCount !== 1 ? "s" : ""}{urlQuery ? ` for "${urlQuery}"` : ""}</span>}</div>
+					<Tooltip content="Zurück zum Posteingang" side="bottom" asChild><Button variant="ghost" shape="square" size="sm" icon={<ArrowLeftIcon size={18} />} onClick={() => navigate(`/mailbox/${mailboxId}/emails/inbox`)} aria-label="Zurück zum Posteingang" /></Tooltip>
+					<div className="min-w-0 flex-1"><h1 className="text-lg font-semibold text-kumo-default truncate">Suchergebnisse</h1>{!isLoading && <span className="text-sm text-kumo-subtle">{totalCount} {totalCount === 1 ? "Ergebnis" : "Ergebnisse"}{urlQuery ? ` für „${urlQuery}“` : ""}</span>}</div>
 				</div>
 				<div className="flex-1 overflow-y-auto">
 					{isLoading ? <div className="flex justify-center py-16"><Loader size="lg" /></div> : results.length === 0 ? (
 						<div className="flex flex-col items-center justify-center py-24 px-6 text-center">
 							<div className="mb-4"><MagnifyingGlassIcon size={48} weight="thin" className="text-kumo-subtle" /></div>
-							<h3 className="text-base font-semibold text-kumo-default mb-1.5">No results found</h3>
-							<p className="text-sm text-kumo-subtle max-w-xs">{urlQuery ? `Nothing matched "${urlQuery}". Try different keywords or check your spelling.` : "Enter a search term to find emails by subject, sender, or content."}</p>
-							{urlQuery && <p className="text-xs text-kumo-subtle mt-3 max-w-sm">Tip: Use operators like <code className="bg-kumo-tint px-1 rounded">from:name</code>, <code className="bg-kumo-tint px-1 rounded">is:unread</code>, <code className="bg-kumo-tint px-1 rounded">has:attachment</code>, <code className="bg-kumo-tint px-1 rounded">before:2025-01-01</code></p>}
+							<h3 className="text-base font-semibold text-kumo-default mb-1.5">Keine Ergebnisse gefunden</h3>
+							<p className="text-sm text-kumo-subtle max-w-xs">{urlQuery ? `Für „${urlQuery}“ wurde nichts gefunden. Versuchen Sie andere Suchbegriffe oder prüfen Sie die Schreibweise.` : "Geben Sie einen Suchbegriff ein, um E-Mails nach Betreff, Absender oder Inhalt zu finden."}</p>
+							{urlQuery && <p className="text-xs text-kumo-subtle mt-3 max-w-sm">Tipp: Verwenden Sie Operatoren wie <code className="bg-kumo-tint px-1 rounded">from:name</code>, <code className="bg-kumo-tint px-1 rounded">is:unread</code>, <code className="bg-kumo-tint px-1 rounded">has:attachment</code>, <code className="bg-kumo-tint px-1 rounded">before:2025-01-01</code></p>}
 						</div>
 					) : (
 						<div>{results.map((email) => {

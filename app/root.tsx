@@ -77,7 +77,7 @@ const KumoLink = forwardRef<
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="de">
 			<head>
 				<meta charSet="UTF-8" />
 				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -127,18 +127,18 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {
-	let title = "Something went wrong";
-	let description = "An unexpected error occurred. Please try again.";
+	let title = "Etwas ist schiefgelaufen";
+	let description = "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
 	let status: number | null = null;
 
 	if (isRouteErrorResponse(error)) {
 		status = error.status;
 		if (error.status === 404) {
-			title = "Page not found";
+			title = "Seite nicht gefunden";
 			description =
-				"The page you're looking for doesn't exist or has been moved.";
+				"Die gesuchte Seite existiert nicht oder wurde verschoben.";
 		} else {
-			title = `Error ${error.status}`;
+			title = `Fehler ${error.status}`;
 			description = error.statusText || description;
 		}
 	} else if (error instanceof Error && import.meta.env.DEV) {
@@ -149,7 +149,7 @@ export function ErrorBoundary({ error }: { error: unknown }) {
 		<div className="flex items-center justify-center min-h-screen p-8">
 			<Empty
 				icon={<WarningIcon size={48} className="text-kumo-inactive" />}
-				title={status === 404 ? "404 — Page not found" : title}
+				title={status === 404 ? "404 – Seite nicht gefunden" : title}
 				description={description}
 				contents={
 					<Button
@@ -158,7 +158,7 @@ export function ErrorBoundary({ error }: { error: unknown }) {
 							window.location.href = "/";
 						}}
 					>
-						Go Home
+						Zur Startseite
 					</Button>
 				}
 			/>

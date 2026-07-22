@@ -27,39 +27,39 @@ import type { UIMessage } from "ai";
 
 const TOOL_LABELS: Record<string, { label: string; icon: React.ReactNode }> = {
 	list_emails: {
-		label: "Fetching emails",
+		label: "E-Mails werden abgerufen",
 		icon: <EnvelopeSimpleIcon size={14} weight="bold" />,
 	},
 	get_email: {
-		label: "Reading email",
+		label: "E-Mail wird gelesen",
 		icon: <EyeIcon size={14} weight="bold" />,
 	},
 	get_thread: {
-		label: "Loading thread",
+		label: "Konversation wird geladen",
 		icon: <ArrowBendUpLeftIcon size={14} weight="bold" />,
 	},
 	search_emails: {
-		label: "Searching",
+		label: "Suche läuft",
 		icon: <MagnifyingGlassIcon size={14} weight="bold" />,
 	},
 	draft_email: {
-		label: "Drafting email",
+		label: "E-Mail wird entworfen",
 		icon: <PaperPlaneTiltIcon size={14} weight="bold" />,
 	},
 	draft_reply: {
-		label: "Drafting reply",
+		label: "Antwort wird entworfen",
 		icon: <PaperPlaneTiltIcon size={14} weight="bold" />,
 	},
 	discard_draft: {
-		label: "Discarding draft",
+		label: "Entwurf wird verworfen",
 		icon: <TrashIcon size={14} weight="bold" />,
 	},
 	mark_email_read: {
-		label: "Updating status",
+		label: "Status wird aktualisiert",
 		icon: <CheckCircleIcon size={14} weight="bold" />,
 	},
 	move_email: {
-		label: "Moving email",
+		label: "E-Mail wird verschoben",
 		icon: <EnvelopeSimpleIcon size={14} weight="bold" />,
 	},
 };
@@ -126,7 +126,7 @@ function DraftActions({
 				onClick={onEdit}
 				disabled={disabled}
 			>
-				Edit & send in composer
+				Bearbeiten & im Editor senden
 			</Button>
 		</div>
 	);
@@ -337,9 +337,9 @@ function AgentChatConnected({
 	};
 
 	const suggestedPrompts = [
-		"Show me the latest inbox emails",
-		"Any unread emails?",
-		"Draft a response to the latest email",
+		"Zeig mir die neuesten E-Mails im Posteingang",
+		"Gibt es ungelesene E-Mails?",
+		"Entwirf eine Antwort auf die neueste E-Mail",
 	];
 
 	return (
@@ -349,24 +349,24 @@ function AgentChatConnected({
 				<div className="flex items-center gap-2">
 					<Badge variant="beta">AI</Badge>
 					<span className="text-xs text-kumo-subtle">
-						Email Agent
+						E-Mail-Agent
 					</span>
 				</div>
 				<div className="flex items-center gap-1">
 					{isStreaming && <Loader size="sm" />}
 					{messages.length > 0 && (
-						<Tooltip content="Clear chat" asChild>
+						<Tooltip content="Chat leeren" asChild>
 							<Button
 								variant="ghost"
 								shape="square"
 								size="sm"
 								icon={<TrashIcon size={14} />}
 								onClick={() => {
-									if (window.confirm("Clear chat history?")) {
+									if (window.confirm("Chatverlauf löschen?")) {
 										setMessages([]);
 									}
 								}}
-								aria-label="Clear chat"
+								aria-label="Chat leeren"
 							/>
 						</Tooltip>
 					)}
@@ -385,8 +385,8 @@ function AgentChatConnected({
 							/>
 						</div>
 						<p className="text-xs text-kumo-subtle text-center leading-relaxed px-4">
-							I can read emails, search conversations, and draft
-							replies.
+							Ich kann E-Mails lesen, Konversationen durchsuchen und
+							Antworten entwerfen.
 						</p>
 						<div className="flex flex-col gap-1.5 w-full">
 							{suggestedPrompts.map((prompt) => (
@@ -446,7 +446,7 @@ function AgentChatConnected({
 											});
 										} else {
 											sendMessage({
-												text: "Let me edit this draft first. Show me what you have so I can modify it.",
+												text: "Lass mich diesen Entwurf zuerst bearbeiten. Zeig mir, was du hast, damit ich ihn anpassen kann.",
 											});
 										}
 									}
@@ -461,7 +461,7 @@ function AgentChatConnected({
 								<div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-kumo-elevated border border-kumo-line rounded-bl-sm">
 									<Loader size="sm" />
 									<span className="text-xs text-kumo-subtle">
-										Thinking...
+										Denkt nach...
 									</span>
 								</div>
 							</div>
@@ -480,7 +480,7 @@ function AgentChatConnected({
 							icon={<StopIcon size={14} weight="fill" />}
 							onClick={() => stop()}
 						>
-							Stop generating
+							Generierung stoppen
 						</Button>
 					</div>
 				) : (
@@ -492,9 +492,9 @@ function AgentChatConnected({
 							value={inputValue}
 							onChange={(e) => setInputValue(e.target.value)}
 							onKeyDown={handleKeyDown}
-							placeholder="Ask your email agent..."
+							placeholder="Fragen Sie Ihren E-Mail-Agenten..."
 							rows={1}
-							aria-label="Chat message input"
+							aria-label="Chat-Nachricht eingeben"
 							className="flex-1 resize-none rounded-lg border border-kumo-line bg-kumo-control px-3 py-2 text-xs text-kumo-default placeholder:text-kumo-subtle focus:outline-none focus:ring-1 focus:ring-kumo-ring min-h-[36px] max-h-[100px]"
 							style={{ height: "auto", overflow: "hidden" }}
 							onInput={(e) => {
@@ -512,7 +512,7 @@ function AgentChatConnected({
 							disabled={!inputValue.trim()}
 							icon={<ArrowUpIcon size={14} weight="bold" />}
 							onClick={handleSend}
-							aria-label="Send message"
+							aria-label="Nachricht senden"
 						/>
 					</div>
 				)}
@@ -541,7 +541,7 @@ export default function AgentPanel() {
 			}),
 		).catch((err) => {
 			console.error("Failed to load agent modules:", err);
-			setLoadError("Failed to connect to agent. Reload to retry.");
+			setLoadError("Verbindung zum Agenten fehlgeschlagen. Zum erneuten Versuch neu laden.");
 		});
 	}, []);
 
@@ -558,7 +558,7 @@ export default function AgentPanel() {
 			<div className="flex flex-col items-center justify-center h-full gap-2">
 				<Loader size="base" />
 				<span className="text-xs text-kumo-subtle">
-					Connecting...
+					Verbindung wird hergestellt...
 				</span>
 			</div>
 		);

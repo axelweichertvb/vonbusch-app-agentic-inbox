@@ -67,7 +67,7 @@ export default function EmailPanelToolbar({
 				size="sm"
 				icon={<ArrowLeftIcon size={18} />}
 				onClick={onBack}
-				aria-label="Back to list"
+				aria-label="Zurück zur Liste"
 				className="md:hidden shrink-0"
 			/>
 
@@ -80,7 +80,7 @@ export default function EmailPanelToolbar({
 						onClick={onSendDraft}
 						loading={isSending}
 					>
-						{isSending ? "Sending..." : "Send"}
+						{isSending ? "Wird gesendet..." : "Senden"}
 					</Button>
 					<Button
 						variant="secondary"
@@ -88,39 +88,39 @@ export default function EmailPanelToolbar({
 						icon={<PencilSimpleIcon size={16} />}
 						onClick={onEditDraft}
 					>
-						Edit
+						Bearbeiten
 					</Button>
 				</>
 			) : (
 				<>
-					<Tooltip content="Reply" side="bottom" asChild>
+					<Tooltip content="Antworten" side="bottom" asChild>
 						<Button
 							variant="ghost"
 							shape="square"
 							size="sm"
 							icon={<ArrowBendUpLeftIcon size={18} />}
 							onClick={onReply}
-							aria-label="Reply"
+							aria-label="Antworten"
 						/>
 					</Tooltip>
-					<Tooltip content="Reply All" side="bottom" asChild>
+					<Tooltip content="Allen antworten" side="bottom" asChild>
 						<Button
 							variant="ghost"
 							shape="square"
 							size="sm"
 							icon={<ChatCircleIcon size={18} />}
 							onClick={onReplyAll}
-							aria-label="Reply All"
+							aria-label="Allen antworten"
 						/>
 					</Tooltip>
-					<Tooltip content="Forward" side="bottom" asChild>
+					<Tooltip content="Weiterleiten" side="bottom" asChild>
 						<Button
 							variant="ghost"
 							shape="square"
 							size="sm"
 							icon={<ArrowBendUpRightIcon size={18} />}
 							onClick={onForward}
-							aria-label="Forward"
+							aria-label="Weiterleiten"
 						/>
 					</Tooltip>
 				</>
@@ -128,7 +128,7 @@ export default function EmailPanelToolbar({
 
 			<div className="h-5 w-px bg-kumo-fill mx-0.5" />
 
-			<Tooltip content={email.starred ? "Unstar" : "Star"} side="bottom" asChild>
+			<Tooltip content={email.starred ? "Favorit entfernen" : "Als Favorit markieren"} side="bottom" asChild>
 				<Button
 					variant="ghost"
 					shape="square"
@@ -141,52 +141,52 @@ export default function EmailPanelToolbar({
 						/>
 					}
 					onClick={onToggleStar}
-					aria-label={email.starred ? "Unstar" : "Star"}
+					aria-label={email.starred ? "Favorit entfernen" : "Als Favorit markieren"}
 				/>
 			</Tooltip>
 
-			<Tooltip content={email.read ? "Mark as unread" : "Mark as read"} side="bottom" asChild>
+			<Tooltip content={email.read ? "Als ungelesen markieren" : "Als gelesen markieren"} side="bottom" asChild>
 				<Button
 					variant="ghost"
 					shape="square"
 					size="sm"
 					icon={email.read ? <EnvelopeSimpleIcon size={18} /> : <EnvelopeOpenIcon size={18} />}
 					onClick={onToggleRead}
-					aria-label={email.read ? "Mark as unread" : "Mark as read"}
+					aria-label={email.read ? "Als ungelesen markieren" : "Als gelesen markieren"}
 				/>
 			</Tooltip>
 
 			<MoveToFolderMenu folders={moveToFolders} onMove={onMove} />
 
 			<div className="ml-auto flex items-center gap-0.5">
-				<Tooltip content="View source" side="bottom" asChild>
+				<Tooltip content="Quelltext anzeigen" side="bottom" asChild>
 					<Button
 						variant="ghost"
 						shape="square"
 						size="sm"
 						icon={<CodeIcon size={18} />}
 						onClick={onViewSource}
-						aria-label="View source"
+						aria-label="Quelltext anzeigen"
 					/>
 				</Tooltip>
-				<Tooltip content="Delete" side="bottom" asChild>
+				<Tooltip content="Löschen" side="bottom" asChild>
 					<Button
 						variant="ghost"
 						shape="square"
 						size="sm"
 						icon={<TrashIcon size={18} />}
 						onClick={onDelete}
-						aria-label="Delete"
+						aria-label="Löschen"
 					/>
 				</Tooltip>
-				<Tooltip content="Close" side="bottom" asChild>
+				<Tooltip content="Schließen" side="bottom" asChild>
 					<Button
 						variant="ghost"
 						shape="square"
 						size="sm"
 						icon={<XIcon size={18} />}
 						onClick={onBack}
-						aria-label="Close"
+						aria-label="Schließen"
 						className="hidden md:inline-flex"
 					/>
 				</Tooltip>
@@ -210,19 +210,19 @@ function MoveToFolderMenu({ folders, onMove }: { folders: Folder[]; onMove: (id:
 
 	return (
 		<div ref={ref} className="relative">
-			<Tooltip content="Move to folder" side="bottom" asChild>
+			<Tooltip content="In Ordner verschieben" side="bottom" asChild>
 				<Button
 					variant="ghost"
 					shape="square"
 					size="sm"
 					icon={<FolderSimpleIcon size={18} />}
 					onClick={() => setOpen((o) => !o)}
-					aria-label="Move to folder"
+					aria-label="In Ordner verschieben"
 				/>
 			</Tooltip>
 			{open && (
 				<div className="absolute top-full left-0 z-50 mt-1 min-w-[160px] rounded-lg border border-kumo-line bg-kumo-elevated shadow-lg py-1">
-					<div className="px-3 py-1.5 text-xs font-medium text-kumo-subtle">Move to</div>
+					<div className="px-3 py-1.5 text-xs font-medium text-kumo-subtle">Verschieben nach</div>
 					<div className="h-px bg-kumo-line my-1" />
 					{folders.map((f) => (
 						<button

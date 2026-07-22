@@ -38,11 +38,11 @@ export const SYSTEM_FOLDER_IDS: readonly FolderId[] = [
  * Used in the sidebar, search result badges, and tool descriptions.
  */
 export const FOLDER_DISPLAY_NAMES: Record<string, string> = {
-	[Folders.INBOX]: "Inbox",
-	[Folders.SENT]: "Sent",
-	[Folders.DRAFT]: "Drafts",
-	[Folders.ARCHIVE]: "Archive",
-	[Folders.TRASH]: "Trash",
+	[Folders.INBOX]: "Posteingang",
+	[Folders.SENT]: "Gesendet",
+	[Folders.DRAFT]: "Entwürfe",
+	[Folders.ARCHIVE]: "Archiv",
+	[Folders.TRASH]: "Papierkorb",
 	[Folders.SPAM]: "Spam",
 };
 

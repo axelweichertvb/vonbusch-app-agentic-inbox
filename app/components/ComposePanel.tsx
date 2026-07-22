@@ -51,7 +51,7 @@ export default function ComposePanel() {
 						icon={<XIcon size={18} />}
 						onClick={closeCompose}
 						disabled={isSending}
-						aria-label="Close compose"
+						aria-label="Verfassen schließen"
 					/>
 				</div>
 			</div>
@@ -66,12 +66,12 @@ export default function ComposePanel() {
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">
 							<label className="text-sm font-medium text-kumo-subtle w-14 shrink-0">
-								To
+								An
 							</label>
 							<div className="flex-1 flex items-center gap-2 min-w-0">
 								<Input
 									type="text"
-									placeholder="recipient@example.com"
+									placeholder="empfaenger@example.com"
 									size="sm"
 									value={to}
 									onChange={(e) => setTo(e.target.value)}
@@ -100,7 +100,7 @@ export default function ComposePanel() {
 										size="sm"
 										value={cc}
 										onChange={(e) => setCc(e.target.value)}
-										placeholder="Separate multiple addresses with commas"
+										placeholder="Mehrere Adressen durch Kommas trennen"
 									/>
 								</div>
 							</div>
@@ -117,7 +117,7 @@ export default function ComposePanel() {
 										size="sm"
 										value={bcc}
 										onChange={(e) => setBcc(e.target.value)}
-										placeholder="Separate multiple addresses with commas"
+										placeholder="Mehrere Adressen durch Kommas trennen"
 									/>
 								</div>
 							</div>
@@ -125,12 +125,12 @@ export default function ComposePanel() {
 
 						<div className="flex items-center gap-2">
 							<label className="text-sm font-medium text-kumo-subtle w-14 shrink-0">
-								Subject
+								Betreff
 							</label>
 							<div className="flex-1">
 								<Input
 									type="text"
-									placeholder="Email subject"
+									placeholder="Betreff der E-Mail"
 									size="sm"
 									value={subject}
 									onChange={(e) => setSubject(e.target.value)}
@@ -152,7 +152,7 @@ export default function ComposePanel() {
 				<div className="mt-auto px-4 py-3 border-t border-kumo-line bg-kumo-fill/30 shrink-0 md:px-6">
 					<div className="flex items-center justify-between">
 						<Button type="button" variant="ghost" size="sm" onClick={closeCompose} disabled={isSending}>
-							Discard
+							Verwerfen
 						</Button>
 						<div className="flex items-center gap-2">
 							<Button
@@ -164,7 +164,7 @@ export default function ComposePanel() {
 								icon={<FloppyDiskIcon size={14} />}
 								onClick={handleSaveDraft}
 							>
-								{isSavingDraft ? "Saving..." : "Save as Draft"}
+								{isSavingDraft ? "Wird gespeichert..." : "Als Entwurf speichern"}
 							</Button>
 							<Button
 								type="submit"
@@ -174,7 +174,7 @@ export default function ComposePanel() {
 								disabled={isSavingDraft || isSending}
 								icon={<PaperPlaneTiltIcon size={14} />}
 							>
-								{isSending ? "Sending..." : "Send"}
+								{isSending ? "Wird gesendet..." : "Senden"}
 							</Button>
 						</div>
 					</div>

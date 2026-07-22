@@ -52,9 +52,9 @@ export default function ComposeEmail() {
 					<div className="flex items-center gap-2">
 						<div className="flex-1">
 							<Input
-								label="To"
+								label="An"
 								type="text"
-								placeholder="recipient@example.com, another@example.com"
+								placeholder="empfaenger@example.com, weitere@example.com"
 								size="sm"
 								value={to}
 								onChange={(e) => setTo(e.target.value)}
@@ -78,7 +78,7 @@ export default function ComposeEmail() {
 							size="sm"
 							value={cc}
 							onChange={(e) => setCc(e.target.value)}
-							placeholder="Separate multiple addresses with commas"
+							placeholder="Mehrere Adressen durch Kommas trennen"
 						/>
 					)}
 					{showCcBcc && (
@@ -88,13 +88,13 @@ export default function ComposeEmail() {
 							size="sm"
 							value={bcc}
 							onChange={(e) => setBcc(e.target.value)}
-							placeholder="Separate multiple addresses with commas"
+							placeholder="Mehrere Adressen durch Kommas trennen"
 						/>
 					)}
 					<Input
-						label="Subject"
+						label="Betreff"
 						type="text"
-						placeholder="Email subject"
+						placeholder="Betreff der E-Mail"
 						size="sm"
 						value={subject}
 						onChange={(e) => setSubject(e.target.value)}
@@ -102,7 +102,7 @@ export default function ComposeEmail() {
 					/>
 					<div>
 						<Text size="sm" DANGEROUS_className="font-medium mb-1.5 block">
-							Message
+							Nachricht
 						</Text>
 						<RichTextEditor value={body} onChange={setBody} />
 					</div>
@@ -114,7 +114,7 @@ export default function ComposeEmail() {
 							onClick={closeComposeModal}
 							disabled={isSending}
 						>
-							Discard
+							Verwerfen
 						</Button>
 						<div className="flex items-center gap-2">
 							<Button
@@ -126,7 +126,7 @@ export default function ComposeEmail() {
 								icon={<FloppyDiskIcon size={14} />}
 								onClick={handleSaveDraft}
 							>
-								{isSavingDraft ? "Saving..." : "Save as Draft"}
+								{isSavingDraft ? "Wird gespeichert..." : "Als Entwurf speichern"}
 							</Button>
 							<Button
 								type="submit"
@@ -136,7 +136,7 @@ export default function ComposeEmail() {
 								disabled={isSavingDraft || isSending}
 								icon={<PaperPlaneTiltIcon size={14} />}
 							>
-								{isSending ? "Sending..." : "Send"}
+								{isSending ? "Wird gesendet..." : "Senden"}
 							</Button>
 						</div>
 					</div>

@@ -10,7 +10,7 @@ import { useMailbox, useUpdateMailbox } from "~/queries/mailboxes";
 
 // Placeholder shown in the textarea when no custom prompt is set.
 // The authoritative default prompt lives in workers/agent/index.ts (DEFAULT_SYSTEM_PROMPT).
-const PROMPT_PLACEHOLDER = `You are an email assistant that helps manage this inbox. You read emails, draft replies, and help organize conversations.\n\nWrite like a real person. Short, direct, flowing prose. Plain text only.\n\n(Leave empty to use the full built-in default prompt)`;
+const PROMPT_PLACEHOLDER = `Sie sind ein E-Mail-Assistent, der bei der Verwaltung dieses Postfachs hilft. Sie lesen E-Mails, entwerfen Antworten und helfen dabei, Konversationen zu organisieren.\n\nSchreiben Sie wie ein echter Mensch. Kurze, direkte, fließende Prosa. Nur Klartext.\n\n(Leer lassen, um den vollständigen integrierten Standard-Prompt zu verwenden)`;
 
 export default function SettingsRoute() {
 	const { mailboxId } = useParams<{ mailboxId: string }>();
@@ -39,10 +39,10 @@ export default function SettingsRoute() {
 		};
 		try {
 			await updateMailboxMutation.mutateAsync({ mailboxId, settings });
-			toastManager.add({ title: "Settings saved!" });
+			toastManager.add({ title: "Einstellungen gespeichert!" });
 		} catch {
 			toastManager.add({
-				title: "Failed to save settings",
+				title: "Einstellungen konnten nicht gespeichert werden",
 				variant: "error",
 			});
 		} finally {
@@ -66,21 +66,21 @@ export default function SettingsRoute() {
 
 	return (
 		<div className="max-w-2xl px-4 py-4 md:px-8 md:py-6 h-full overflow-y-auto">
-			<h1 className="text-lg font-semibold text-kumo-default mb-6">Settings</h1>
+			<h1 className="text-lg font-semibold text-kumo-default mb-6">Einstellungen</h1>
 
 			<div className="space-y-6">
 				{/* Account */}
 				<div className="rounded-lg border border-kumo-line bg-kumo-base p-5">
 					<div className="text-sm font-medium text-kumo-default mb-4">
-						Account
+						Konto
 					</div>
 					<div className="space-y-3">
 						<Input
-							label="Display Name"
+							label="Anzeigename"
 							value={displayName}
 							onChange={(e) => setDisplayName(e.target.value)}
 						/>
-						<Input label="Email" type="email" value={mailbox.email} disabled />
+						<Input label="E-Mail" type="email" value={mailbox.email} disabled />
 					</div>
 				</div>
 
@@ -90,12 +90,12 @@ export default function SettingsRoute() {
 						<div className="flex items-center gap-2">
 							<RobotIcon size={16} weight="duotone" className="text-kumo-subtle" />
 							<span className="text-sm font-medium text-kumo-default">
-								AI Agent Prompt
+								KI-Agenten-Prompt
 							</span>
 							{isCustomPrompt ? (
-								<Badge variant="primary">Custom</Badge>
+								<Badge variant="primary">Benutzerdefiniert</Badge>
 							) : (
-								<Badge variant="secondary">Default</Badge>
+								<Badge variant="secondary">Standard</Badge>
 							)}
 						</div>
 						{isCustomPrompt && (
@@ -105,13 +105,13 @@ export default function SettingsRoute() {
 								icon={<ArrowCounterClockwiseIcon size={14} />}
 								onClick={handleResetPrompt}
 							>
-								Reset to default
+								Auf Standard zurücksetzen
 							</Button>
 						)}
 					</div>
 					<p className="text-xs text-kumo-subtle mb-3">
-						Customize how the AI agent behaves for this mailbox.
-						Leave empty to use the built-in default prompt.
+						Passen Sie an, wie sich der KI-Agent für dieses Postfach verhält.
+						Leer lassen, um den integrierten Standard-Prompt zu verwenden.
 					</p>
 					<textarea
 						value={agentPrompt}
@@ -121,15 +121,15 @@ export default function SettingsRoute() {
 						className="w-full resize-y rounded-lg border border-kumo-line bg-kumo-recessed px-3 py-2 text-xs text-kumo-default placeholder:text-kumo-subtle focus:outline-none focus:ring-1 focus:ring-kumo-ring font-mono leading-relaxed"
 					/>
 					<p className="text-xs text-kumo-subtle mt-2">
-						The prompt is sent as the system message to the AI model.
-						It controls the agent's personality, writing style, and behavior rules.
+						Der Prompt wird als Systemnachricht an das KI-Modell gesendet.
+						Er steuert die Persönlichkeit, den Schreibstil und die Verhaltensregeln des Agenten.
 					</p>
 				</div>
 
 				{/* Save */}
 				<div className="flex justify-end">
 					<Button variant="primary" onClick={handleSave} loading={isSaving}>
-						Save Changes
+						Änderungen speichern
 					</Button>
 				</div>
 			</div>

@@ -93,7 +93,7 @@ export default function HomeRoute() {
 		e.preventDefault();
 		setCreateError(null);
 		if (!newPrefix || !selectedDomain) {
-			setCreateError("Please fill in all fields");
+			setCreateError("Bitte füllen Sie alle Felder aus");
 			return;
 		}
 		const email = `${newPrefix}@${selectedDomain}`;
@@ -101,12 +101,12 @@ export default function HomeRoute() {
 		setIsCreating(true);
 		try {
 			await createMailbox.mutateAsync({ email, name });
-			toastManager.add({ title: "Mailbox created successfully!" });
+			toastManager.add({ title: "Postfach erfolgreich erstellt!" });
 			setIsCreateOpen(false);
 			setNewPrefix("");
 			setNewName("");
 		} catch (err: unknown) {
-			const message = (err instanceof Error ? err.message : null) || "Failed to create mailbox";
+			const message = (err instanceof Error ? err.message : null) || "Postfach konnte nicht erstellt werden";
 			setCreateError(message);
 		} finally {
 			setIsCreating(false);
@@ -118,11 +118,11 @@ export default function HomeRoute() {
 		setIsDeleting(true);
 		try {
 			await deleteMailbox.mutateAsync(mailboxToDelete.id);
-			toastManager.add({ title: "Mailbox deleted" });
+			toastManager.add({ title: "Postfach gelöscht" });
 			setIsDeleteOpen(false);
 			setMailboxToDelete(null);
 		} catch {
-			toastManager.add({ title: "Failed to delete mailbox", variant: "error" });
+			toastManager.add({ title: "Postfach konnte nicht gelöscht werden", variant: "error" });
 		} finally {
 			setIsDeleting(false);
 		}
@@ -144,14 +144,14 @@ export default function HomeRoute() {
 			<div className="mx-auto max-w-2xl px-4 py-8 md:px-6 md:py-16">
 				<div className="mb-8">
 					<div className="flex items-center justify-between">
-						<h1 className="text-2xl font-bold text-kumo-default">Mailboxes</h1>
+						<h1 className="text-2xl font-bold text-kumo-default">Postfächer</h1>
 						{!isConfigured && (
 							<Button
 								variant="primary"
 								icon={<PlusIcon size={16} />}
 								onClick={() => setIsCreateOpen(true)}
 							>
-								New Mailbox
+								Neues Postfach
 							</Button>
 						)}
 					</div>
@@ -193,7 +193,7 @@ export default function HomeRoute() {
 										size="sm"
 										shape="square"
 										icon={<TrashIcon size={16} />}
-										aria-label={`Delete mailbox ${account.email}`}
+										aria-label={`Postfach ${account.email} löschen`}
 										onClick={(e) => {
 											e.preventDefault();
 											e.stopPropagation();
@@ -219,12 +219,12 @@ export default function HomeRoute() {
 								/>
 							</div>
 							<h3 className="text-base font-semibold text-kumo-default mb-1.5">
-								No mailboxes yet
+								Noch keine Postfächer
 							</h3>
 							<p className="text-sm text-kumo-subtle max-w-sm mb-5">
 								{isConfigured
-									? "Your email routing is configured but no mailboxes have been created yet. They will appear here automatically."
-									: "Create a mailbox to start sending and receiving emails with your domain."}
+									? "Ihr E-Mail-Routing ist konfiguriert, aber es wurden noch keine Postfächer erstellt. Sie erscheinen hier automatisch."
+									: "Erstellen Sie ein Postfach, um mit Ihrer Domain E-Mails zu senden und zu empfangen."}
 							</p>
 							{!isConfigured && (
 								<Button
@@ -232,7 +232,7 @@ export default function HomeRoute() {
 									icon={<PlusIcon size={16} />}
 									onClick={() => setIsCreateOpen(true)}
 								>
-									Create Mailbox
+									Postfach erstellen
 								</Button>
 							)}
 						</div>
@@ -244,7 +244,7 @@ export default function HomeRoute() {
 			<Dialog.Root open={isCreateOpen} onOpenChange={setIsCreateOpen}>
 				<Dialog size="sm" className="p-6">
 					<Dialog.Title className="text-base font-semibold mb-5">
-						Create New Mailbox
+						Neues Postfach erstellen
 					</Dialog.Title>
 					<form onSubmit={handleCreate} className="space-y-4">
 						{createError && (
@@ -254,12 +254,12 @@ export default function HomeRoute() {
 						)}
 						<div>
 							<span className="text-sm font-medium text-kumo-default mb-1.5 block">
-								Email Address
+								E-Mail-Adresse
 							</span>
 							<div className="flex items-center gap-2">
 								<div className="flex-1">
 									<Input
-										aria-label="Address prefix"
+										aria-label="Adress-Präfix"
 										placeholder="info"
 										size="sm"
 										value={newPrefix}
@@ -286,13 +286,13 @@ export default function HomeRoute() {
 									</div>
 								) : (
 									<span className="text-sm text-kumo-subtle">
-										{selectedDomain || "no domain"}
+										{selectedDomain || "keine Domain"}
 									</span>
 								)}
 							</div>
 						</div>
 						<Input
-							label="Display Name (optional)"
+							label="Anzeigename (optional)"
 							placeholder="Info"
 							size="sm"
 							value={newName}
@@ -302,7 +302,7 @@ export default function HomeRoute() {
 							<Dialog.Close
 								render={(props) => (
 									<Button {...props} variant="secondary" size="sm">
-										Cancel
+										Abbrechen
 									</Button>
 								)}
 							/>
@@ -313,7 +313,7 @@ export default function HomeRoute() {
 								loading={isCreating}
 								disabled={!selectedDomain}
 							>
-								Create
+								Erstellen
 							</Button>
 						</div>
 					</form>
@@ -330,20 +330,20 @@ export default function HomeRoute() {
 			>
 				<Dialog size="sm" className="p-6">
 					<Dialog.Title className="text-base font-semibold mb-2">
-						Delete Mailbox
+						Postfach löschen
 					</Dialog.Title>
 					<Dialog.Description className="text-kumo-subtle text-sm mb-5">
-						Are you sure you want to delete{" "}
+						Möchten Sie{" "}
 						<strong className="text-kumo-default">
 							{mailboxToDelete?.email}
 						</strong>
-						? This action cannot be undone.
+						{" "}wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
 					</Dialog.Description>
 					<div className="flex justify-end gap-2">
 						<Dialog.Close
 							render={(props) => (
 								<Button {...props} variant="secondary" size="sm">
-									Cancel
+									Abbrechen
 								</Button>
 							)}
 						/>
@@ -353,7 +353,7 @@ export default function HomeRoute() {
 							loading={isDeleting}
 							onClick={handleDelete}
 						>
-							Delete
+							Löschen
 						</Button>
 					</div>
 				</Dialog>

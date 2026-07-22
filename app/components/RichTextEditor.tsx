@@ -92,82 +92,82 @@ export default function RichTextEditor({
 			{/* Toolbar */}
 			<div className="flex flex-wrap items-center gap-0.5 bg-kumo-recessed px-2 py-1.5 border-b border-kumo-line shrink-0">
 				{/* Text formatting */}
-				<Tooltip content="Bold" side="bottom" asChild>
+				<Tooltip content="Fett" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("bold") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<TextBIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleBold().run()}
-						aria-label="Bold"
+						aria-label="Fett"
 					/>
 				</Tooltip>
-				<Tooltip content="Italic" side="bottom" asChild>
+				<Tooltip content="Kursiv" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("italic") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<TextItalicIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleItalic().run()}
-						aria-label="Italic"
+						aria-label="Kursiv"
 					/>
 				</Tooltip>
-				<Tooltip content="Underline" side="bottom" asChild>
+				<Tooltip content="Unterstrichen" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("underline") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<TextUnderlineIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleUnderline().run()}
-						aria-label="Underline"
+						aria-label="Unterstrichen"
 					/>
 				</Tooltip>
-				<Tooltip content="Strikethrough" side="bottom" asChild>
+				<Tooltip content="Durchgestrichen" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("strike") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<TextStrikethroughIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleStrike().run()}
-						aria-label="Strikethrough"
+						aria-label="Durchgestrichen"
 					/>
 				</Tooltip>
 
 				<div className="mx-1 h-5 w-px bg-kumo-fill" />
 
 				{/* Lists */}
-				<Tooltip content="Bullet list" side="bottom" asChild>
+				<Tooltip content="Aufzählungsliste" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("bulletList") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<ListBulletsIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleBulletList().run()}
-						aria-label="Bullet list"
+						aria-label="Aufzählungsliste"
 					/>
 				</Tooltip>
-				<Tooltip content="Numbered list" side="bottom" asChild>
+				<Tooltip content="Nummerierte Liste" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("orderedList") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<ListNumbersIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleOrderedList().run()}
-						aria-label="Numbered list"
+						aria-label="Nummerierte Liste"
 					/>
 				</Tooltip>
 
 				<div className="mx-1 h-5 w-px bg-kumo-fill" />
 
 				{/* Block formatting */}
-				<Tooltip content="Blockquote" side="bottom" asChild>
+				<Tooltip content="Zitat" side="bottom" asChild>
 					<Button
 						variant={editor.isActive("blockquote") ? "secondary" : "ghost"}
 						shape="square"
 						size="sm"
 						icon={<QuotesIcon size={16} />}
 						onClick={() => editor.chain().focus().toggleBlockquote().run()}
-						aria-label="Blockquote"
+						aria-label="Zitat"
 					/>
 				</Tooltip>
 				<Tooltip content="Link" side="bottom" asChild>
@@ -181,32 +181,32 @@ export default function RichTextEditor({
 					/>
 				</Tooltip>
 				{editor.isActive("link") && (
-					<Tooltip content="Remove link" side="bottom" asChild>
+					<Tooltip content="Link entfernen" side="bottom" asChild>
 						<Button
 							variant="ghost"
 							shape="square"
 							size="sm"
 							icon={<LinkBreakIcon size={16} />}
 							onClick={() => editor.chain().focus().unsetLink().run()}
-							aria-label="Remove link"
+							aria-label="Link entfernen"
 						/>
 					</Tooltip>
 				)}
-				<Tooltip content="Horizontal rule" side="bottom" asChild>
+				<Tooltip content="Horizontale Linie" side="bottom" asChild>
 					<Button
 						variant="ghost"
 						shape="square"
 						size="sm"
 						icon={<MinusIcon size={16} />}
 						onClick={() => editor.chain().focus().setHorizontalRule().run()}
-						aria-label="Horizontal rule"
+						aria-label="Horizontale Linie"
 					/>
 				</Tooltip>
 
 				<div className="mx-1 h-5 w-px bg-kumo-fill" />
 
 				{/* Undo/Redo */}
-				<Tooltip content="Undo" side="bottom" asChild>
+				<Tooltip content="Rückgängig" side="bottom" asChild>
 					<Button
 						variant="ghost"
 						shape="square"
@@ -214,10 +214,10 @@ export default function RichTextEditor({
 						icon={<ArrowCounterClockwiseIcon size={16} />}
 						onClick={() => editor.chain().focus().undo().run()}
 						disabled={!editor.can().undo()}
-						aria-label="Undo"
+						aria-label="Rückgängig"
 					/>
 				</Tooltip>
-				<Tooltip content="Redo" side="bottom" asChild>
+				<Tooltip content="Wiederholen" side="bottom" asChild>
 					<Button
 						variant="ghost"
 						shape="square"
@@ -225,7 +225,7 @@ export default function RichTextEditor({
 						icon={<ArrowClockwiseIcon size={16} />}
 						onClick={() => editor.chain().focus().redo().run()}
 						disabled={!editor.can().redo()}
-						aria-label="Redo"
+						aria-label="Wiederholen"
 					/>
 				</Tooltip>
 			</div>
