@@ -19,7 +19,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Folders } from "shared/folders";
+import { Folders, FOLDER_DISPLAY_NAMES, getFolderDisplayName } from "shared/folders";
 import { formatListDate } from "shared/dates";
 import MailboxSplitView from "~/components/MailboxSplitView";
 import { getSnippetText } from "~/lib/utils";
@@ -179,9 +179,13 @@ export default function EmailListRoute() {
 	const { data: folders = [] } = useFolders(mailboxId);
 
 	const folderName = useMemo(() => {
+		if (!folder) return getFolderDisplayName(Folders.INBOX);
+		// System folders always use the canonical German label, ignoring the
+		// (possibly English) name stored in the DB seed. Custom folders fall
+		// back to their user-defined DB name.
+		if (FOLDER_DISPLAY_NAMES[folder.toLowerCase()]) return getFolderDisplayName(folder);
 		const found = folders.find((f) => f.id === folder);
-		if (found) return found.name;
-		return folder ? folder.charAt(0).toUpperCase() + folder.slice(1) : "Posteingang";
+		return found?.name ?? getFolderDisplayName(folder);
 	}, [folders, folder]);
 
 	const isPanelOpen = selectedEmailId !== null || isComposing;

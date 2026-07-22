@@ -92,10 +92,10 @@ export const mailboxMigrations: Migration[] = [
             );
 
             INSERT INTO folders (id, name, is_deletable) VALUES
-                ('inbox', 'Inbox', 0),
-                ('sent', 'Sent', 0),
-                ('trash', 'Trash', 0),
-                ('archive', 'Archive', 0),
+                ('inbox', 'Posteingang', 0),
+                ('sent', 'Gesendet', 0),
+                ('trash', 'Papierkorb', 0),
+                ('archive', 'Archiv', 0),
                 ('spam', 'Spam', 0);
 
             CREATE TABLE emails (
@@ -136,7 +136,7 @@ export const mailboxMigrations: Migration[] = [
 	},
 	{
 		name: "3_add_draft_folder",
-		sql: txn(`INSERT INTO folders (id, name, is_deletable) VALUES ('draft', 'Drafts', 0);`),
+		sql: txn(`INSERT INTO folders (id, name, is_deletable) VALUES ('draft', 'Entwürfe', 0);`),
 	},
 	{
 		name: "4_add_message_id",
