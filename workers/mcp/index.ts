@@ -87,6 +87,7 @@ export class EmailMCP extends McpAgent<Env> {
 			"list_mailboxes",
 			"List all available mailboxes",
 			{},
+			{ readOnlyHint: true },
 			async () => {
 				const result = await toolListMailboxes(env);
 				return mcpText(result);
@@ -114,6 +115,7 @@ export class EmailMCP extends McpAgent<Env> {
 					.default(1)
 					.describe("Page number for pagination"),
 			},
+			{ readOnlyHint: true },
 			async ({ mailboxId, folder, limit, page }) => {
 				const denied = await verifyMailbox(mailboxId);
 				if (denied) return denied;
@@ -130,6 +132,7 @@ export class EmailMCP extends McpAgent<Env> {
 				mailboxId: z.string().describe("The mailbox email address"),
 				emailId: z.string().describe("The email ID to retrieve"),
 			},
+			{ readOnlyHint: true },
 			async ({ mailboxId, emailId }) => {
 				const denied = await verifyMailbox(mailboxId);
 				if (denied) return denied;
@@ -154,6 +157,7 @@ export class EmailMCP extends McpAgent<Env> {
 					.string()
 					.describe("The thread_id to retrieve all messages for"),
 			},
+			{ readOnlyHint: true },
 			async ({ mailboxId, threadId }) => {
 				const denied = await verifyMailbox(mailboxId);
 				if (denied) return denied;
@@ -174,6 +178,7 @@ export class EmailMCP extends McpAgent<Env> {
 					.optional()
 					.describe("Optional folder to restrict search to"),
 			},
+			{ readOnlyHint: true },
 			async ({ mailboxId, query, folder }) => {
 				const denied = await verifyMailbox(mailboxId);
 				if (denied) return denied;
